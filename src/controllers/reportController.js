@@ -6,7 +6,7 @@ exports.getDailySummary = async (req, res) => {
       SELECT 
         (SELECT COUNT(*) FROM trucks) as total_trucks,
         (SELECT COUNT(*) FROM trucks WHERE status = 'AVAILABLE') as available_trucks,
-        (SELECT COUNT(*) FROM drivers WHERE status = 'AVAILABLE') as available_drivers,
+        (SELECT COUNT(*) FROM users WHERE status = 'AVAILABLE') as available_drivers,
         (SELECT COUNT(*) FROM jobs WHERE status = 'IN_PROGRESS') as active_jobs,
         (SELECT COALESCE(SUM(cargo_weight_kg), 0) FROM jobs WHERE status = 'IN_PROGRESS') as total_weight
     `;

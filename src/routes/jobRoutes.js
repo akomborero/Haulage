@@ -24,5 +24,6 @@ router.patch('/:id/status', protect, authorize('ADMIN', 'OPERATOR'), jobControll
 
 // 4. Delete Job (Usually restricted to ADMIN for audit integrity)
 router.delete('/:id', protect, authorize('ADMIN'), jobController.deleteJob);
+router.post('/:id/complete', protect,authorize('ADMIN'), jobController.completeJob);
 
 module.exports = router;
