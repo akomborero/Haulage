@@ -54,23 +54,37 @@ exports.createTruck = async (req, res) => {
 
 
 exports.updateTruck = async (req, res) => {
-  const { id } = req.params;
-  const { registration_number, capacity_kg, status } = req.body;
+    const { id } = req.params;
+    const { 
+        registration_number, 
+        status, 
+        last_service_date, 
+        insurance_expiry 
+    } = req.body;
 
-  try {
-    const result = await db.query(
-      `UPDATE trucks 
-       SET registration_number = $1, capacity_kg = $2, status = $3 
-       WHERE id = $4 RETURNING *`,
-      [registration_number, capacity_kg, status, id]
-    );
+    try {
+        const query = `
+            UPDATE trucks 
+            SET 
+                registration_number = COALESCE($1, registration_number),
+                status = COALESCE($2, status), 
+                last_service_date = COALESCE($3, last_service_date),
+                insurance_expiry = COALESCE($4, insurance_expiry)
+            WHERE id = $5 
+            RETURNING *`;
 
-    if (result.rows.length === 0) return res.status(404).json({ error: "Truck not found" });
+        const values = [registration_number, status, last_service_date, insurance_expiry, id];
+        const result = await db.query(query, values);
 
-    res.status(200).json({ message: "Truck updated successfully", truck: result.rows[0] });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: "Truck not found" });
+        }
+
+        res.json({ message: "Truck updated successfully", truck: result.rows[0] });
+    } catch (err) {
+        console.error("Update Error:", err);
+        res.status(500).json({ error: err.message });
+    }
 };
 
 

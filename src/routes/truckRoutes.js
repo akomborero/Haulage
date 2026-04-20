@@ -12,7 +12,9 @@ router.get('/', protect, truckController.getAllTrucks);
 
 // Admin only actions
 router.post('/', protect, authorize('ADMIN'), truckController.createTruck); 
-router.put('/:id', protect, authorize('ADMIN'), truckController.updateTruck); 
+// Change .put to .patch if you want to use the PATCH method in Postman
+router.patch('/:id', protect, authorize('ADMIN'), truckController.updateTruck);
 router.delete('/:id', protect, authorize('ADMIN'), truckController.deleteTruck); 
+router.get('/:id', truckController.getTruckById);
 
 module.exports = router;
