@@ -13,17 +13,6 @@ CREATE TABLE trucks (
     status VARCHAR(20) DEFAULT 'AVAILABLE' CHECK (status IN ('AVAILABLE', 'IN_TRANSIT', 'MAINTENANCE', 'OUT_OF_SERVICE'))
 );
 
--- DRIVERS
-CREATE TABLE drivers (
-    id SERIAL PRIMARY KEY,
-    full_name VARCHAR(100) NOT NULL,
-    license_number VARCHAR(50) UNIQUE NOT NULL,
-    license_expiry DATE NOT NULL,           -- Cannot drive if expired
-    phone_number VARCHAR(20) NOT NULL,
-    emergency_contact VARCHAR(20),
-    years_experience INT DEFAULT 0,
-    status VARCHAR(20) DEFAULT 'AVAILABLE' CHECK (status IN ('AVAILABLE', 'BUSY', 'OFF_DUTY'))
-);
 
 -- JOBS
 CREATE TABLE jobs (
@@ -43,10 +32,28 @@ CREATE TABLE jobs (
 
 
 -- For Authentication 
-
 CREATE TABLE users (
+    -- Authentication & Identity
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
     password_hash TEXT NOT NULL,
-    role VARCHAR(20) DEFAULT 'OPERATOR' CHECK (role IN ('ADMIN', 'OPERATOR')) 
+    role VARCHAR(20) DEFAULT 'OPERATOR' CHECK (role IN ('ADMIN', 'OPERATOR', 'DRIVER')),
+    
+    -- Personal & Contact Info
+    full_name VARCHAR(100) NOT NULL,
+    phone_number VARCHAR(20),
+    emergency_contact VARCHAR(20),
+    
+    -- Driver-Specific Professional Fields
+    license_number VARCHAR(50) UNIQUE,
+    license_class VARCHAR(20), -- e.g., 'Class 2', 'Class 4'
+    license_expiry DATE,
+    medical_clearance_expiry DATE,
+    years_experience INT DEFAULT 0,
+    
+    -- Logic/Operations
+    -- Added status to track who is currently available for a Job assignment
+    status VARCHAR(20) DEFAULT 'AVAILABLE' CHECK (status IN ('AVAILABLE', 'BUSY', 'OFF_DUTY')),
+    
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

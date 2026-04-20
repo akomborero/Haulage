@@ -3,23 +3,33 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 exports.register = async (req, res) => {
-    const { username, password, role } = req.body; // role defaults to 'OPERATOR' in DB
+    // 1. Destructure all the new fields
+    const { 
+        username, password, role, full_name, 
+        license_number, license_class, license_expiry, 
+        phone_number 
+    } = req.body;
 
     try {
-        // 1. Check if user already exists
         const userExist = await db.query('SELECT * FROM users WHERE username = $1', [username]);
         if (userExist.rows.length > 0) {
             return res.status(400).json({ error: "Username already taken" });
         }
 
-        // 2. Hash the password (Security Best Practice)
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        // 3. Save to Database
+        // 2. Include the extra columns in your INSERT
         const newUser = await db.query(
-            'INSERT INTO users (username, password_hash, role) VALUES ($1, $2, $3) RETURNING id, username, role',
-            [username, hashedPassword, role || 'OPERATOR']
+            `INSERT INTO users (
+                username, password_hash, role, full_name, 
+                license_number, license_class, license_expiry, phone_number
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
+            RETURNING id, username, role`,
+            [
+                username, hashedPassword, role || 'OPERATOR', full_name, 
+                license_number, license_class, license_expiry, phone_number
+            ]
         );
 
         res.status(201).json({
@@ -27,6 +37,7 @@ exports.register = async (req, res) => {
             user: newUser.rows[0]
         });
     } catch (err) {
+        console.error(err); // Good for debugging in Docker logs
         res.status(500).json({ error: "Server error during registration" });
     }
 };
@@ -49,7 +60,12 @@ exports.login = async (req, res) => {
         
 
         // Create the token
-        const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '2h' });
+      // Make sure user.role is included!
+const token = jwt.sign(
+    { id: user.id, username: user.username, role: user.role }, 
+    process.env.JWT_SECRET, 
+    { expiresIn: '2h' }
+);
 
         res.json({ message: "Login successful", token });
     } catch (err) {
