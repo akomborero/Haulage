@@ -61,14 +61,13 @@ exports.createDriver = async (req, res) => {
 exports.getAllDrivers = async (req, res) => {
     try {
         const result = await db.query(
-            "SELECT id, username, full_name, license_number, license_class, license_expiry, phone_number, role FROM users WHERE role = 'DRIVER'"
+            "SELECT id, username, full_name, license_number, license_class, license_expiry, phone_number, status, role FROM users WHERE role = 'DRIVER'"
         );
         res.json(result.rows);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 };
-
 
 // UPDATE DRIVER
 exports.updateDriver = async (req, res) => {
