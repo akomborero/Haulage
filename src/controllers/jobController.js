@@ -7,7 +7,7 @@ exports.createJob = async (req, res) => {
         driver_id, 
         pickup_location, 
         delivery_location, 
-        description,      // This maps to cargo_type
+        description,    
         cargo_weight_kg, 
         estimated_arrival 
     } = req.body;
@@ -45,7 +45,7 @@ exports.createJob = async (req, res) => {
         // 5. If all pass, proceed with Transaction...
         await db.query('BEGIN');
 
-        // FIXED: Added pickup_location, delivery_location, and cargo_type to the INSERT
+        
         const jobQuery = `
             INSERT INTO jobs (
                 job_number, truck_id, driver_id, pickup_location, 
@@ -99,7 +99,7 @@ exports.getAllJobs = async (req, res) => {
 
 
 
-// Add this to your jobController.js
+
 exports.getJobById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -136,7 +136,7 @@ exports.completeJob = async (req, res) => {
 
     const { truck_id, driver_id } = jobResult.rows[0];
 
-    // 2. Now that we know it's PENDING, we safely update everything
+    // 2.  update everything
     await db.query('BEGIN');
     await db.query('UPDATE jobs SET status = $1 WHERE id = $2', ['COMPLETED', id]);
     await db.query('UPDATE trucks SET status = $1 WHERE id = $2', ['AVAILABLE', truck_id]);
@@ -152,11 +152,11 @@ exports.completeJob = async (req, res) => {
 
 
 
-// 1. Ensure this exists for line 23 of your routes
+
 exports.updateJobStatus = async (req, res) => {
     try {
         const { id } = req.params;
-        const { status } = req.body; // e.g., 'completed', 'in-progress'
+        const { status } = req.body;
         const result = await db.query(
             'UPDATE jobs SET status = $1 WHERE id = $2 RETURNING *',
             [status, id]
@@ -167,7 +167,7 @@ exports.updateJobStatus = async (req, res) => {
     }
 };
 
-// 2. Ensure this exists for your DELETE route
+
 exports.deleteJob = async (req, res) => {
     const { id } = req.params;
     const client = await db.connect();

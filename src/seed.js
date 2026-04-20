@@ -18,7 +18,7 @@ async function seedUsers() {
         [operatorPass]
     );
 
-    console.log("✅ Roles seeded: fleet_mgr (ADMIN) and dispatcher_1 (OPERATOR)");
+    console.log(" Roles seeded: fleet_mgr (ADMIN) and dispatcher_1 (OPERATOR)");
     process.exit();
 }
 

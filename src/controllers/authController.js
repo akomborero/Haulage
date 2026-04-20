@@ -3,7 +3,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 exports.register = async (req, res) => {
-    // 1. Destructure all the new fields
+   
+
     const { 
         username, password, role, full_name, 
         license_number, license_class, license_expiry, 
@@ -19,7 +20,7 @@ exports.register = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        // 2. Include the extra columns in your INSERT
+        
         const newUser = await db.query(
             `INSERT INTO users (
                 username, password_hash, role, full_name, 
@@ -37,7 +38,7 @@ exports.register = async (req, res) => {
             user: newUser.rows[0]
         });
     } catch (err) {
-        console.error(err); // Good for debugging in Docker logs
+        console.error(err); 
         res.status(500).json({ error: "Server error during registration" });
     }
 };
@@ -60,7 +61,7 @@ exports.login = async (req, res) => {
         
 
         // Create the token
-      // Make sure user.role is included!
+     
 const token = jwt.sign(
     { id: user.id, username: user.username, role: user.role }, 
     process.env.JWT_SECRET, 

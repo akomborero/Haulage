@@ -20,16 +20,16 @@ exports.createDriver = async (req, res) => {
  const hashedPassword = await bcrypt.hash(password, salt);
   const query = `
     INSERT INTO users (
-        username,                   -- 1
-        password_hash,              -- 2
-        role,                       -- 3 (Hardcoded 'DRIVER')
-        full_name,                  -- 4
-        license_number,             -- 5
-        license_class,              -- 6
-        license_expiry,             -- 7
-        medical_clearance_expiry,   -- 8
-        phone_number,               -- 9
-        emergency_contact           -- 10
+        username,                   
+        password_hash,              
+        role,                       
+        full_name,                  
+        license_number,             
+        license_class,              
+        license_expiry,             
+        medical_clearance_expiry,   
+        phone_number,               
+        emergency_contact           
     ) 
     VALUES ($1, $2, 'DRIVER', $3, $4, $5, $6, $7, $8, $9) 
     RETURNING id, username, full_name, role`;

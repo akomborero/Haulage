@@ -13,7 +13,7 @@ exports.createTruck = async (req, res) => {
     insurance_expiry 
   } = req.body;
 
-  // 1. Basic Validation (Keep this at the top)
+  // 1.  Validation 
   if (!registration_number || !vin_number || !capacity_kg || !insurance_expiry) {
     return res.status(400).json({ error: "Missing required fields (Reg, VIN, Capacity, or Insurance Expiry)" });
   }
@@ -122,7 +122,7 @@ exports.getTruckById = async (req, res) => {
 
 
 
-// Add this if it's missing or misnamed!
+
 exports.deleteTruck = async (req, res) => {
     try {
         const { id } = req.params;

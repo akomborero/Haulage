@@ -1,4 +1,4 @@
--- 1. TRUCKS (No changes needed here, this looks solid!)
+-- 1. TRUCKS 
 CREATE TABLE trucks (
     id SERIAL PRIMARY KEY,
     registration_number VARCHAR(20) UNIQUE NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE trucks (
     status VARCHAR(20) DEFAULT 'AVAILABLE' CHECK (status IN ('AVAILABLE', 'IN_TRANSIT', 'MAINTENANCE', 'OUT_OF_SERVICE'))
 );
 
--- 2. USERS (Moved this UP so Jobs can reference it)
+-- 2. USERS 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
@@ -31,12 +31,12 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 3. JOBS (Fixed the Reference)
+-- 3. JOBS 
 CREATE TABLE jobs (
     id SERIAL PRIMARY KEY,
     job_number VARCHAR(20) UNIQUE NOT NULL,
     truck_id INT REFERENCES trucks(id),
-    driver_id INT REFERENCES users(id), -- ✅ FIXED: Points to users(id) now
+    driver_id INT REFERENCES users(id), -- 
     pickup_location TEXT NOT NULL,
     delivery_location TEXT NOT NULL,
     cargo_type TEXT NOT NULL,

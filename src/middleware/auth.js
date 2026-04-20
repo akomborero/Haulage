@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-// 1. Define the protect function
+// 1.  the protect function
 const protect = (req, res, next) => {
   const token = req.header('Authorization');
   if (!token) return res.status(401).json({ error: "Access Denied. No token provided." });
@@ -14,7 +14,7 @@ const protect = (req, res, next) => {
   }
 };
 
-// 2. Define the authorize function
+// 2. the authorize function
 const authorize = (...roles) => {
   return (req, res, next) => {
     // Check if the user's role (from the token) is in the allowed list

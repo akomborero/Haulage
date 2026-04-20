@@ -3,7 +3,6 @@ const router = express.Router();
 const driverController = require('../controllers/driverController');
 const { protect, authorize } = require('../middleware/auth');
 
-// 1. GLOBAL MIDDLEWARE - This applies to EVERYTHING below it in this file
 router.use(protect);
 router.use(authorize('ADMIN'));
 

@@ -5,8 +5,8 @@ const db = require('./db');
 
 const truckRoutes = require('./routes/truckRoutes'); 
 const jobRoutes = require('./routes/jobRoutes');
-const driverRoutes = require('./routes/driverRoutes'); // <--- ADD THIS LINE
-const reportRoutes = require('./routes/reportRoutes'); // ✅ Correct: looking in the routes folder next to app.js
+const driverRoutes = require('./routes/driverRoutes'); 
+const reportRoutes = require('./routes/reportRoutes'); 
 const authRoutes = require('./routes/authRoutes');
 
 const app = express();
@@ -15,16 +15,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 2. Use the routes
-// This means every truck route will start with /api/trucks
 app.use('/api/trucks', truckRoutes);
 app.use('/api/drivers', driverRoutes);
 app.use('/api/auth', authRoutes);
 
 app.use('/api/jobs', jobRoutes);
-
-
-// Add this with your other app.use lines
 app.use('/api/reports', reportRoutes);
 
 app.get('/health', async (req, res) => {
@@ -38,5 +33,5 @@ app.get('/health', async (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(` Server running on http://localhost:${PORT}`);
 });
