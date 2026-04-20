@@ -7,6 +7,7 @@ const truckRoutes = require('./routes/truckRoutes');
 const jobRoutes = require('./routes/jobRoutes');
 const driverRoutes = require('./routes/driverRoutes'); // <--- ADD THIS LINE
 const reportRoutes = require('./routes/reportRoutes'); // ✅ Correct: looking in the routes folder next to app.js
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(express.json());
 // This means every truck route will start with /api/trucks
 app.use('/api/trucks', truckRoutes);
 app.use('/api/drivers', driverRoutes);
+app.use('/api/auth', authRoutes);
 
 app.use('/api/jobs', jobRoutes);
 

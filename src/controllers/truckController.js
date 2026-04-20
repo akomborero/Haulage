@@ -105,3 +105,21 @@ exports.getTruckById = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+
+
+// Add this if it's missing or misnamed!
+exports.deleteTruck = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await db.query('DELETE FROM trucks WHERE id = $1 RETURNING *', [id]);
+        
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: "Truck not found" });
+        }
+        
+        res.json({ message: "Truck deleted successfully" });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};

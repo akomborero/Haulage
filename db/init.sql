@@ -1,4 +1,4 @@
--- TRUCKS: Focus on maintenance and compliance
+-- TRUCKS
 CREATE TABLE trucks (
     id SERIAL PRIMARY KEY,
     registration_number VARCHAR(20) UNIQUE NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE trucks (
     status VARCHAR(20) DEFAULT 'AVAILABLE' CHECK (status IN ('AVAILABLE', 'IN_TRANSIT', 'MAINTENANCE', 'OUT_OF_SERVICE'))
 );
 
--- DRIVERS: Focus on safety and contact
+-- DRIVERS
 CREATE TABLE drivers (
     id SERIAL PRIMARY KEY,
     full_name VARCHAR(100) NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE drivers (
     status VARCHAR(20) DEFAULT 'AVAILABLE' CHECK (status IN ('AVAILABLE', 'BUSY', 'OFF_DUTY'))
 );
 
--- JOBS: Focus on tracking and costs
+-- JOBS
 CREATE TABLE jobs (
     id SERIAL PRIMARY KEY,
     job_number VARCHAR(20) UNIQUE NOT NULL, -- e.g., JOB-2026-001
@@ -42,10 +42,11 @@ CREATE TABLE jobs (
 
 
 
--- For Authentication Bonus
+-- For Authentication 
+
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
     password_hash TEXT NOT NULL,
-    role VARCHAR(20) DEFAULT 'OPERATOR' -- e.g., ADMIN, OPERATOR
+    role VARCHAR(20) DEFAULT 'OPERATOR' CHECK (role IN ('ADMIN', 'OPERATOR')) 
 );
